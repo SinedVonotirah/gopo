@@ -1,6 +1,9 @@
 package persistence
 
+import "github.com/SinedVonotirah/gopo/persistence/entities"
+
 type UserRepo interface {
+	Insert(*entities.UserEntity) error
 }
 
 type UserGroupRepo interface {
