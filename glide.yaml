@@ -1,0 +1,13 @@
+package: github.com/SinedVonotirah/gopo
+import:
+- package: github.com/jinzhu/gorm
+  version: ^1.0.0
+  subpackages:
+  - dialects/postgres
+- package: github.com/mattes/migrate
+  version: ^3.0.1
+  subpackages:
+  - database/postgres
+  - source/file
+- package: github.com/sirupsen/logrus
+  version: ^1.0.3

@@ -1,8 +1,8 @@
 package gorm
 
 import (
-	"github.com/SinedVonotirah/gopo/persistence/entities"
-	"github.com/SinedVonotirah/gopo/shared/logging"
+	"gopo/shared/logging"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

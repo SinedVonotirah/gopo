@@ -5,7 +5,7 @@ import (
 	_ "github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
 
-	"github.com/SinedVonotirah/gopo/shared/logging"
+	"gopo/shared/logging"
 )
 
 func ApplyMigrations(folder string, connectionString string, drop bool) {
