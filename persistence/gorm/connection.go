@@ -1,7 +1,7 @@
 package gorm
 
 import (
-	"gopo/shared/logging"
+	"github.com/SinedVonotirah/gopo/shared/logging"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
