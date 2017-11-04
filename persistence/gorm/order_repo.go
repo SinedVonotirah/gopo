@@ -7,15 +7,15 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type UserRepo struct {
+type OrderRepo struct {
 	connection *gorm.DB
 }
 
-func NewUserRepo(connection *Connection) *UserRepo {
-	return &UserRepo{connection.gorm}
+func NewOrderRepo(connection *Connection) *OrderRepo {
+	return &OrderRepo{connection.gorm}
 }
 
-func (repo *UserRepo) Insert(entity *entities.UserEntity) error {
+func (repo *OrderRepo) Insert(entity *entities.OrderEntity) error {
 	db := repo.connection.Begin()
 	err := db.Create(entity).Error
 	if err != nil {
@@ -28,13 +28,4 @@ func (repo *UserRepo) Insert(entity *entities.UserEntity) error {
 		db.Commit()
 	}
 	return nil
-}
-
-func (repo *UserRepo) GetUserById(id int64) (entities.UserEntity, error) {
-	user := entities.UserEntity{}
-
-	repo.connection.Model(&user).Related(user.Orders)
-
-	return user, nil
-
 }

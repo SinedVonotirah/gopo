@@ -1,8 +1,9 @@
 package entities
 
 type ProductDetailsEntity struct {
-	ProductId   string
+	Id          int64
 	Description string
+	Product     *ProductEntity `orm:"reverse(one)"`
 }
 
 func (ProductDetailsEntity) TableName() string {

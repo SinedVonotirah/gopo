@@ -4,7 +4,8 @@ type UserEntity struct {
 	Id        int64
 	Name      string
 	Mail      string
-	UserGroup UserGroupEntity
+	UserGroup *UserGroupEntity `orm:"rel(fk)"`
+	Orders    []*OrderEntity   `orm:"reverse(many)"`
 }
 
 func (UserEntity) TableName() string {

@@ -3,7 +3,7 @@ package entities
 type UserGroupEntity struct {
 	Id    int64
 	Name  string
-	Users []UserEntity
+	Users []*UserEntity `orm:"reverse(many)"`
 }
 
 func (UserGroupEntity) TableName() string {

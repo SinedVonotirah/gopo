@@ -3,31 +3,30 @@ package benchs
 import (
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
+	"fmt"
+
 	"github.com/SinedVonotirah/gopo/persistence/db_migrator"
 	"github.com/SinedVonotirah/gopo/persistence/entities"
 	"github.com/SinedVonotirah/gopo/persistence/gorm"
 )
 
-const (
-	connection     = "host=localhost user=postgres password=1 dbname=gopo sslmode=disable"
-	migrationUrl   = "postgresql://postgres:1@localhost:5432/gopo?sslmode=disable"
-	migrationsPath = "file://persistence/db_migrator/migrations/"
-)
-
-var repo *gorm.UserRepo
+var userRepo *gorm.UserRepo
+var orderRepo *gorm.OrderRepo
 
 func init() {
 	st := NewSuite("gorm")
 	st.InitF = func() {
-		st.AddBenchmark("Insert", 2000*ORM_MULTI, GormInsert)
+		//		st.AddBenchmark("Insert", 2000*ORM_MULTI, GormInsertOrder)
+		st.AddBenchmark("Insert", 1*ORM_MULTI, GormGetById)
 
 		connection := gorm.NewConnection(connection)
-		repo = gorm.NewUserRepo(connection)
+		userRepo = gorm.NewUserRepo(connection)
+		orderRepo = gorm.NewOrderRepo(connection)
 	}
 
 }
 
-func GormInsert(b *B) {
+func GormInsertUser(b *B) {
 	var entity entities.UserEntity
 
 	wrapExecute(b, func() {
@@ -36,7 +35,43 @@ func GormInsert(b *B) {
 	})
 	for i := 0; i < b.N; i++ {
 		entity.Id = 0
-		err := repo.Insert(&entity)
+		err := userRepo.Insert(&entity)
+		if err != nil {
+			logging.WithFields(logging.Fields{
+				"error": err,
+			}).Error("Gorm insert error")
+			b.FailNow()
+		}
+	}
+}
+
+func GormInsertOrder(b *B) {
+	var entity entities.OrderEntity
+
+	wrapExecute(b, func() {
+		//entity = entities.NewOrder()
+		fmt.Println(entity)
+		db_migrator.ApplyMigrations(migrationsPath, migrationUrl, true)
+	})
+	for i := 0; i < b.N; i++ {
+		err := orderRepo.Insert(&entity)
+		if err != nil {
+			logging.WithFields(logging.Fields{
+				"error": err,
+			}).Error("Gorm insert error")
+			b.FailNow()
+		}
+	}
+}
+
+func GormGetById(b *B) {
+
+	wrapExecute(b, func() {
+		db_migrator.ApplyMigrations(migrationsPath, migrationUrl, true)
+	})
+	for i := 0; i < b.N; i++ {
+		usr, err := userRepo.GetUserById(1)
+		fmt.Println(usr)
 		if err != nil {
 			logging.WithFields(logging.Fields{
 				"error": err,
