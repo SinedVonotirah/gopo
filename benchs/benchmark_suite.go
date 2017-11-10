@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	connection     = "host=localhost user=postgres password=1 dbname=gopo sslmode=disable"
+	connectionStr     = "host=localhost user=postgres password=1 dbname=gopo sslmode=disable"
 	migrationUrl   = "postgresql://postgres:1@localhost:5432/gopo?sslmode=disable"
 	migrationsPath = "file://persistence/db_migrator/migrations/"
 )

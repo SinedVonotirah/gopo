@@ -1,7 +1,7 @@
 package beego
 
 import (
-	"github.com/SinedVonotirah/gopo/persistence/entities"
+	"github.com/SinedVonotirah/gopo/persistence/beego/entities"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -32,6 +32,6 @@ func initDb(connectionUrl string) orm.Ormer {
 		connectionUrl)
 
 	orm.RunSyncdb("default", false, true)
-	orm.Debug = true
+	//	orm.Debug = true
 	return orm.NewOrm()
 }

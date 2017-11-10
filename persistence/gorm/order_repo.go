@@ -3,7 +3,8 @@ package gorm
 import (
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
-	"github.com/SinedVonotirah/gopo/persistence/entities"
+	"github.com/SinedVonotirah/gopo/persistence/gorm/entities"
+
 	"github.com/jinzhu/gorm"
 )
 

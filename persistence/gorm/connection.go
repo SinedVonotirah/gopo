@@ -24,6 +24,6 @@ func initDb(connectionUrl string) *gorm.DB {
 			"error": err,
 		}).Error("gorm.Open error")
 	}
-	db.LogMode(true)
+	//	db.LogMode(true)
 	return db
 }
