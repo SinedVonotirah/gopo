@@ -1,7 +1,7 @@
-package gorm
+package repo
 
 import (
-	"github.com/SinedVonotirah/gopo/persistence/gorm/entities"
+	"github.com/SinedVonotirah/gopo/orms/gorm/gorm/persistence/entities"
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
 	"fmt"
@@ -35,6 +35,7 @@ func (repo *UserRepo) Insert(entity *entities.UserEntity) error {
 func (repo *UserRepo) GetUserById(id int64) (entities.UserEntity, error) {
 	user := entities.UserEntity{Id: id}
 	repo.connection.Model(&user).First(&user)
+	fmt.Println(user)
 	return user, nil
 }
 
