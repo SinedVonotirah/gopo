@@ -1,33 +1,35 @@
-package benchs
+package gorm
 
 import (
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
 	"fmt"
 
-	"github.com/SinedVonotirah/gopo/persistence/db_migrator"
-	"github.com/SinedVonotirah/gopo/persistence/gorm"
-	"github.com/SinedVonotirah/gopo/persistence/gorm/entities"
+	"github.com/SinedVonotirah/gopo/shared/db_migrator"
+	"github.com/SinedVonotirah/gopo/orms/gorm/persistence/repo"
+	"github.com/SinedVonotirah/gopo/orms/gorm/persistence"
+	"github.com/SinedVonotirah/gopo/orms/gorm/persistence/entities"
+	"github.com/SinedVonotirah/gopo/shared/bench"
 )
 
-var gormUserRepo *gorm.UserRepo
-var gormOrderRepo *gorm.OrderRepo
+var gormUserRepo *repo.UserRepo
+var gormOrderRepo *repo.OrderRepo
 
 func init() {
-	st := NewSuite("gorm")
+	st := bench.NewSuite("gorm")
 	st.InitF = func() {
 
-		st.AddBenchmark("GetUserById", 1*ORM_MULTI, GormGetUserById)
-		st.AddBenchmark("GetUserByIdWithOrders", 1*ORM_MULTI, GormGetUserByIdWithOrders)
+		st.AddBenchmark("GetUserById", 1*bench.ORM_MULTI, GormGetUserById)
+		st.AddBenchmark("GetUserByIdWithOrders", 1*bench.ORM_MULTI, GormGetUserByIdWithOrders)
 
-		connection := gorm.NewConnection(connectionStr)
-		gormUserRepo = gorm.NewUserRepo(connection)
-		gormOrderRepo = gorm.NewOrderRepo(connection)
+		connection := persistence.NewConnection(bench.ConnectionStr)
+		gormUserRepo = repo.NewUserRepo(connection)
+		gormOrderRepo = repo.NewOrderRepo(connection)
 	}
 
 }
 
-func GormGetUserById(b *B) {
+func GormGetUserById(b *bench.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := gormUserRepo.GetUserById(1)
 		if err != nil {
@@ -39,7 +41,7 @@ func GormGetUserById(b *B) {
 	}
 }
 
-func GormGetUserByIdWithOrders(b *B) {
+func GormGetUserByIdWithOrders(b *bench.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := gormUserRepo.GetUserByIdWithOrders(1)
 		if err != nil {
@@ -51,11 +53,11 @@ func GormGetUserByIdWithOrders(b *B) {
 	}
 }
 
-func GormCreateUser(b *B) {
+func GormCreateUser(b *bench.B) {
 	var entity entities.UserEntity
 
 	for i := 0; i < b.N; i++ {
-		wrapExecute(b, func() {
+		bench.WrapExecute(b, func() {
 			entities.NewUserEntity(&entity)
 		})
 		entity.Id = 0
@@ -69,13 +71,13 @@ func GormCreateUser(b *B) {
 	}
 }
 
-func GormInsertOrder(b *B) {
+func GormInsertOrder(b *bench.B) {
 	var entity entities.OrderEntity
 
-	wrapExecute(b, func() {
+	bench.WrapExecute(b, func() {
 		//entity = entities.NewOrder()
-		fmt.Println(entity)
-		db_migrator.ApplyMigrations(migrationsPath, migrationUrl, true)
+		//fmt.Println(entity)
+		//db_migrator.ApplyMigrations(migrationsPath, migrationUrl, true)
 	})
 	for i := 0; i < b.N; i++ {
 		err := gormOrderRepo.Insert(&entity)

@@ -1,7 +1,7 @@
-package beego
+package persistence
 
 import (
-	"github.com/SinedVonotirah/gopo/persistence/beego/entities"
+	"github.com/SinedVonotirah/gopo/orms/beego/persistence/entities"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -16,7 +16,7 @@ func init() {
 }
 
 type Connection struct {
-	beego orm.Ormer
+	Beego orm.Ormer
 }
 
 func NewConnection(connectionUrl string) *Connection {

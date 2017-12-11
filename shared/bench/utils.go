@@ -1,4 +1,4 @@
-package benchs
+package bench
 
 import (
 	"os"
@@ -13,7 +13,7 @@ var (
 	ORM_SOURCE   string
 )
 
-func checkErr(err error) {
+func CheckErr(err error) {
 	if err != nil {
 		logging.WithFields(logging.Fields{
 			"error": err,
@@ -22,7 +22,7 @@ func checkErr(err error) {
 	}
 }
 
-func wrapExecute(b *B, cbk func()) {
+func WrapExecute(b *B, cbk func()) {
 	b.StopTimer()
 	defer b.StartTimer()
 	cbk()
