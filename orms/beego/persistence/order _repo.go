@@ -1,8 +1,7 @@
-package repo
+package persistence
 
 import (
 	"github.com/SinedVonotirah/gopo/orms/beego/persistence/entities"
-	"github.com/SinedVonotirah/gopo/orms/beego/persistence"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -10,7 +9,7 @@ type OrderRepo struct {
 	connection orm.Ormer
 }
 
-func NewOrderRepo(connection *persistence.Connection) *OrderRepo {
+func NewOrderRepo(connection *Connection) *OrderRepo {
 	return &OrderRepo{connection.Beego}
 }
 

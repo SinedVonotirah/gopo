@@ -3,31 +3,40 @@ package beego
 import (
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
-	"fmt"
-
-	"github.com/SinedVonotirah/gopo/shared/bench"
 	"github.com/SinedVonotirah/gopo/orms/beego/persistence"
-	"github.com/SinedVonotirah/gopo/orms/beego/persistence/entities"
-
-	"github.com/SinedVonotirah/gopo/orms/beego/persistence/repo"
+	"github.com/SinedVonotirah/gopo/shared/bench"
 )
 
-var beegoUserRepo *repo.UserRepo
-var beegoOrderRepo *repo.OrderRepo
+var beegoUserRepo *persistence.UserRepo
+var beegoOrderRepo *persistence.OrderRepo
 
+/*
 func init() {
 	st := bench.NewSuite("beego")
 	st.InitF = func() {
-		st.AddBenchmark("GetUserById", 1*bench.ORM_MULTI, BeegoGetUserById)
-		st.AddBenchmark("GetUserByIdWithOrders", 1*bench.ORM_MULTI, BeegoGetUserByIdWithOrders)
+		st.AddBenchmark("GetUserById", 1*ORM_MULTI, BeegoGetUserById)
+		st.AddBenchmark("GetUserByIdWithOrders", 1*ORM_MULTI, BeegoGetUserByIdWithOrders)
 
-		connection := persistence.NewConnection(bench.ConnectionStr)
-		beegoUserRepo = repo.NewUserRepo(connection)
-		beegoOrderRepo = repo.NewOrderRepo(connection)
+		connection := beego.NewConnection(connectionStr)
+		beegoUserRepo = beego.NewUserRepo(connection)
+		beegoOrderRepo = beego.NewOrderRepo(connection)
+	}
+}
+*/
+
+func InitBenchSuite(connectionUrl string, repeatsCount int) {
+	st := bench.NewSuite("beego")
+	st.InitF = func() {
+		st.AddBenchmark("GetUserById", repeatsCount, GetUserById)
+		st.AddBenchmark("GetUserByIdWithOrders", repeatsCount, GetUserByIdWithOrders)
+
+		connection := persistence.NewConnection(connectionUrl)
+		beegoUserRepo = persistence.NewUserRepo(connection)
+		beegoOrderRepo = persistence.NewOrderRepo(connection)
 	}
 }
 
-func BeegoGetUserById(b *bench.B) {
+func GetUserById(b *bench.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := beegoUserRepo.GetUserById(1)
 		if err != nil {
@@ -39,7 +48,7 @@ func BeegoGetUserById(b *bench.B) {
 	}
 }
 
-func BeegoGetUserByIdWithOrders(b *bench.B) {
+func GetUserByIdWithOrders(b *bench.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := beegoUserRepo.GetUserByIdWithOrders(1)
 		if err != nil {
@@ -51,6 +60,7 @@ func BeegoGetUserByIdWithOrders(b *bench.B) {
 	}
 }
 
+/*
 func BeegoCreateUser(b *bench.B) {
 	var entity entities.UserEntity
 
@@ -140,3 +150,4 @@ func GetUsersByGroupName(b *bench.B) {
 		}
 	}
 }
+*/

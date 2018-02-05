@@ -1,10 +1,9 @@
-package repo
+package persistence
 
 import (
-	"fmt"
+	//"fmt"
 
 	"github.com/SinedVonotirah/gopo/orms/beego/persistence/entities"
-	"github.com/SinedVonotirah/gopo/orms/beego/persistence"
 
 	"github.com/astaxie/beego/orm"
 )
@@ -13,7 +12,7 @@ type UserRepo struct {
 	connection orm.Ormer
 }
 
-func NewUserRepo(connection *persistence.Connection) *UserRepo {
+func NewUserRepo(connection *Connection) *UserRepo {
 	return &UserRepo{connection.Beego}
 }
 
@@ -39,18 +38,20 @@ func (repo *UserRepo) UpdateUser(entity *entities.UserEntity) (int64, error) {
 func (repo *UserRepo) GetUserById(id int64) (entities.UserEntity, error) {
 	user := entities.UserEntity{}
 	err := repo.connection.QueryTable("user").Filter("Id", id).RelatedSel().Limit(10000).One(&user)
-	fmt.Println(user)
+	//fmt.Println(user.ToString())
 	return user, err
 }
 
+// FIXME
 func (repo *UserRepo) GetUserByIdWithOrders(id int64) (entities.UserEntity, error) {
 	user := entities.UserEntity{}
 	err := repo.connection.QueryTable("user").Filter("Id", id).RelatedSel().Limit(10000).One(&user)
 	_, err = repo.connection.LoadRelated(&user, "Orders")
-	/*	for _, order := range user.Orders {
+	for _, order := range user.Orders {
 		_, err = repo.connection.LoadRelated(order, "Products")
 
-	}*/
+	}
+	//fmt.Println(user.ToString())
 	return user, err
 }
 

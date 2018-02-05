@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	ConnectionStr     = "host=localhost user=postgres password=1 dbname=gopo sslmode=disable"
-	MigrationUrl   = "postgresql://postgres:1@localhost:5432/gopo?sslmode=disable"
-	MigrationsPath = "file://persistence/db_migrator/migrations/"
+	connectionStr  = "host=localhost user=postgres password=1 dbname=gopo sslmode=disable"
+	migrationUrl   = "postgresql://postgres:1@localhost:5432/gopo?sslmode=disable"
+	migrationsPath = "file://persistence/db_migrator/migrations/"
 )
 
 type BenchmarkResult struct {
@@ -210,11 +210,11 @@ func RunBenchmark(name string) {
 	if s, ok := benchmarks[name]; ok {
 		s.InitF()
 		if len(s.benchs) != benchmarksNums {
-			CheckErr(fmt.Errorf("%s have not enough benchmarks"))
+			checkErr(fmt.Errorf("%s have not enough benchmarks"))
 		}
 		s.run()
 	} else {
-		CheckErr(fmt.Errorf("not found benchmark suite %s"))
+		checkErr(fmt.Errorf("not found benchmark suite %s"))
 	}
 }
 

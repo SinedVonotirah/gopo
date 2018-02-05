@@ -13,7 +13,7 @@ var (
 	ORM_SOURCE   string
 )
 
-func CheckErr(err error) {
+func checkErr(err error) {
 	if err != nil {
 		logging.WithFields(logging.Fields{
 			"error": err,

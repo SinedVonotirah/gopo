@@ -1,9 +1,9 @@
-package repo
+package persistence
 
 import (
 	"github.com/SinedVonotirah/gopo/shared/logging"
 
-	"github.com/SinedVonotirah/gopo/orms/gorm/gorm/persistence/entities"
+	"github.com/SinedVonotirah/gopo/orms/gorm/persistence/entities"
 
 	"github.com/jinzhu/gorm"
 )

@@ -1,10 +1,8 @@
-package repo
+package persistence
 
 import (
-	"github.com/SinedVonotirah/gopo/orms/gorm/gorm/persistence/entities"
+	"github.com/SinedVonotirah/gopo/orms/gorm/persistence/entities"
 	"github.com/SinedVonotirah/gopo/shared/logging"
-
-	"fmt"
 
 	"github.com/jinzhu/gorm"
 )
@@ -35,13 +33,11 @@ func (repo *UserRepo) Insert(entity *entities.UserEntity) error {
 func (repo *UserRepo) GetUserById(id int64) (entities.UserEntity, error) {
 	user := entities.UserEntity{Id: id}
 	repo.connection.Model(&user).First(&user)
-	fmt.Println(user)
 	return user, nil
 }
 
 func (repo *UserRepo) GetUserByIdWithOrders(id int64) (entities.UserEntity, error) {
 	user := entities.UserEntity{Id: id}
 	repo.connection.Model(&user).First(&user).Related(&user.Orders, "Orders")
-	fmt.Println(user)
 	return user, nil
 }

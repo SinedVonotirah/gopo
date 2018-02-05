@@ -1,5 +1,10 @@
 package entities
 
+import (
+	"bytes"
+	"fmt"
+)
+
 type OrderEntity struct {
 	Id       int64
 	Name     string
@@ -18,4 +23,14 @@ func NewOrderEntity(entity *OrderEntity) {
 	entity.Products = []*ProductEntity{
 		&ProductEntity{Id: 1, Name: "product", ProductDetails: &ProductDetailsEntity{Id: 1, Description: "desc"}},
 	}
+}
+
+func (entity OrderEntity) ToString() string {
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf("Order - %+v, %+v, %+v", entity.Id, entity.Name))
+	buffer.WriteString(entity.User.ToString())
+	/*for _, product := range entity.Products {
+		buffer.WriteString(product.ToString())
+	}*/
+	return buffer.String()
 }
